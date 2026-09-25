@@ -1,0 +1,33 @@
+name: Build APK
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Ambil kod
+        uses: actions/checkout@v4
+
+      - name: Pasang Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Senarai fail
+        run: ls -la
+
+      - name: Beri kebenaran
+        run: chmod +x gradlew
+
+      - name: Bina APK
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Simpan APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReptiManager-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
