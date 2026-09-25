@@ -5,25 +5,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
       - name: Ambil kod
         uses: actions/checkout@v4
 
-      - name: Pasang Java 17
+      - name: Pasang Java
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Pasang Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
-
-      - name: Senarai fail
-        run: ls -la
+      - name: Pasang Gradle terus
+        run: |
+          sudo apt update
+          sudo apt install -y gradle
+          gradle --version
 
       - name: Bina APK
         run: gradle assembleDebug --no-daemon --stacktrace
